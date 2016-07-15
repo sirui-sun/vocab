@@ -61,15 +61,34 @@ var localStorageAccess = (function() {
 	    // add words to local storage
 	    addWord: function(word) {
 	    	var toAdd = new Word(word);
+	    	// initial case
 	    	if (!localStorage[WORD_LIST_KEY]) {
 		    	localStorage[WORD_LIST_KEY] = JSON.stringify([toAdd]);
+  			
+		    // nth word case
   			} else {
 			    var currentWordList = JSON.parse(localStorage[WORD_LIST_KEY]);
+			    for(var i=0;i<currentWordList.length;i++) {
+			    	if (word == currentWordList[i].word) { return; }
+			    }
+			    console.log("adding word: " + word + ", currentWordList: " + currentWordList);
 			    currentWordList.push(toAdd);
 			    localStorage[WORD_LIST_KEY] = JSON.stringify(currentWordList);
 			}
+		},
+
+		// removes words from local storage (used for debug purposes)
+		removeWord: function(word) {
+			var currentWordList = JSON.parse(localStorage[WORD_LIST_KEY]);
+			for(var i=0;i<currentWordList.length;i++) {
+			   	if (word == currentWordList[i].word) { 
+			   		currentWordList.splice(i, 1);
+			   		break
+			   	}
+			}
+			localStorage[WORD_LIST_KEY] = JSON.stringify(currentWordList);
 		}
-		
+	
 		// end public interface    
   	};
 })();

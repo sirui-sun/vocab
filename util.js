@@ -4,7 +4,7 @@ var DEBUG_MODE = true;
 // Spaced repetition intervals, in seconds =======================================
 // 		Current formula: 20 minutes, 1 day, 2 days, 4 days, 7 days, 
 // 		11 days, 14 days, 21 days , 35 days, 70 days, 105 days
-var intervals = [1/72, 1, 2, 4, 7, 11, 14, 21, 35, 70, 105];
+var intervals = [0, 1/72, 1, 2, 4, 7, 11, 14, 21, 35, 70, 105];
 
 // intervals for iterating over spaces array
 var MIN_INTERVAL = 0;
@@ -59,8 +59,8 @@ var localStorageAccess = (function() {
 	    },
 
 	    // add words to local storage
-	    addWord: function(word) {
-	    	var toAdd = new Word(word);
+	    addWord: function(word, timestamp=null, interval=null) {
+	    	var toAdd = new Word(word, timestamp, interval);
 	    	// initial case
 	    	if (!localStorage[WORD_LIST_KEY]) {
 		    	localStorage[WORD_LIST_KEY] = JSON.stringify([toAdd]);
@@ -87,6 +87,28 @@ var localStorageAccess = (function() {
 			   	}
 			}
 			localStorage[WORD_LIST_KEY] = JSON.stringify(currentWordList);
+		},
+
+		// increments the interval for the word
+		incrementIntervalForWord: function(word) {
+			var w = localStorage[WORD_LIST_KEY];
+			var currWord;
+			if (w) {
+				// find word if it exists in the list
+				var wordsList = JSON.parse(localStorage[WORD_LIST_KEY]);
+				for(var i=0;i<wordsList.length;i++) {
+					if (word == wordsList[i].word) {
+						currWord = wordsList[i];	
+					}
+				}
+
+				// update the word in local storage to reflect incremented interval
+				if (currWord) {
+					this.removeWord(word);
+					var newInterval = currWord.interval < MAX_INTERVAL ? currWord.interval + 1 : currWord.interval;
+					this.addWord(currWord.word, currWord.timestamp, newInterval);
+				}
+			}
 		}
 	
 		// end public interface    

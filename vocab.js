@@ -1,5 +1,5 @@
 // TODO: do this via Angular
-// TODO: how to hvae Jquery get loaded via HTTPS rather than in the package
+// TODO: how to have Jquery get loaded via HTTPS rather than in the package
 // TODO: utility functions file, right now for creation of object
 
 updateView();
@@ -61,7 +61,8 @@ function renderWord(word) {
 
 function onGotItButtonClicked (event) {
 	thisWord = event.data.word;
-	alert("Got " + thisWord);
+	localStorageAccess.incrementIntervalForWord(thisWord);
+	updateView();
 }
 
 function onForgetButtonClicked (event) {

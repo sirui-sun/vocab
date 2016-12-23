@@ -43,15 +43,21 @@ function renderWord(word) {
 	thisEl = $(vsprintf('#%s', [thisWord]));
 	thisEl.append(newEl(el="h1", classes="", ids="", content=thisWord));
 
+	// Row for definition
+	definitionRowId = vsprintf("definition-row-%s", [thisWord]);
+	thisEl.append(newEl(el="div", classes="row", id=definitionRowId, content=""));
+	definitionRow = $('#' + definitionRowId);
+
+	definitionRow.append(newEl(el="div", classes="col-md-2 col-md-offset-5", ids="col_define_" + thisWord, content=""));
+	downwardArrowEl = '<span class="glyphicon glyphicon-chevron-down definitionChevron"></span>'
+	$("#col_define_" + thisWord).append(newEl(el="div", classes="btn btn-link define-button col-centered", ids="define_" + thisWord, content="Show definition " + downwardArrowEl));
+
 	// Row of buttons
 	btnRowId = vsprintf("btn-row-%s", [thisWord])
 	thisEl.append(newEl(el="div", classes="row", id=btnRowId, content=""));
 	buttonRow = $("#" + btnRowId);
 
-	buttonRow.append(newEl(el="div", classes="col-md-2 col-md-offset-3", ids="col_define_" + thisWord, content=""));
-	$("#col_define_" + thisWord).append(newEl(el="div", classes="btn btn-primary define-button", ids="define_" + thisWord, content="Define"));
-
-	buttonRow.append(newEl(el="div", classes="col-md-2", ids="col_gotIt_" + thisWord, content=""));
+	buttonRow.append(newEl(el="div", classes="col-md-2 col-md-offset-4", ids="col_gotIt_" + thisWord, content=""));
 	$("#col_gotIt_" + thisWord).append(newEl(el="div", classes="btn btn-success gotIt-button", ids="gotIt_" + thisWord, content="Got It"));
 
 	buttonRow.append(newEl(el="div", classes="col-md-2", ids="col_forget_" + thisWord, content=""));

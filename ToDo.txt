@@ -1,0 +1,13 @@
+TO DO
+- fix defines
+- ability to manually add a word/phrase
+- ask to add for words that are ambiguous
+- use REGEXes in matching Google searches
+- empty state dialogue
+- What happens when you try to add a word that's already known?
+
+MVP
+- add cloud functionality
+- split out util.js into multiple files
+
+DONE

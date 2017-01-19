@@ -10,7 +10,7 @@ var intervals = [0, 1/72, 1, 2, 4, 7, 11, 14, 21, 35, 70, 105];
 var MIN_INTERVAL = 0;
 var MAX_INTERVAL = intervals.length;
 
-// Object for saving Word state ==================================================
+//  Word state ===================================================================
 var Word = function(word, timestamp, interval) {
 	this.word = word;
 	
@@ -45,6 +45,10 @@ function shouldBeDisplayedNow(timestamp, interval) {
 	toCheck.setDate(toCheck.getDate() + intervals[interval]);
 	return now > toCheck;
 }
+
+// Word definition ===============================================================
+// var WordDefinition = function(word, partOfSpeech, )
+
 
 // Module for accessing local storage ============================================
 // TODO: read up on JS module pattern

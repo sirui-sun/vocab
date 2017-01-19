@@ -5,8 +5,11 @@ OUTPUT = "dict.json"
 
 dictionary = {}
 
+# Adds words to dictionary, given a HTML file of word definitions in the following format:
+# <p><b>[word]</b> (<i>[part of speech]</i>) [definition] </p>
+
 def AddWordToDictionary(word, partOfSpeech, definition):
-	entry = "{0}|{1}".format(partOfSpeech, definition)
+	entry = (partOfSpeech, definition)
 	if word in dictionary:
 		dictionary[word].append(entry)
 	else:
@@ -16,9 +19,17 @@ with open(INPUT) as f:
 	html = f.read()
 	soup = BeautifulSoup(html, "html.parser")
 	for wordSoup in soup.find_all('p'):
-		word = wordSoup.b.string.encode("utf-8").lower()
-		partOfSpeech = str(wordSoup.i.string).replace("\"", "'")
-		definition = wordSoup.encode("utf-8").split("</i>) ")[1].split("</p>")[0].replace("\"", "'")
+
+		# get the word in question, convert all words to lowercase
+		word = wordSoup.b.string.lower()
+		
+		# get the part of speech
+		partOfSpeech = wordSoup.i.string
+
+		# get the definition
+		definition = wordSoup.contents[3][2:]
+
+		# add to ongoing dictionary
 		AddWordToDictionary(word, partOfSpeech, definition)
 
 with open(OUTPUT, 'w') as g:

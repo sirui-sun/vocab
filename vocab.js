@@ -101,5 +101,5 @@ function onDeleteButtonClicked (event) {
 function onDefineButtonClicked (event) {
 	thisWord = event.data.word;
 	definitions = Dictionary.define(thisWord);
-	alert(String(definitions));
+	alert(definitions);
 }

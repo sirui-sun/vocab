@@ -1,10 +1,11 @@
 TO DO
-- fix defines
+- make definitions prettier
 - ability to manually add a word/phrase
 - ask to add for words that are ambiguous
 - use REGEXes in matching Google searches
 - empty state dialogue
 - What happens when you try to add a word that's already known?
+- time intervals in the beginning are too short (for non-testing version)
 
 MVP
 - add cloud functionality

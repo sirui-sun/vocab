@@ -1,4 +1,26 @@
 updateView();
+prepareModal();
+
+function prepareModal() {
+	// Get the modal
+	var modal = document.getElementById('definitionsModal');
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+    	closeDefinitionsModal();
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+    	if (event.target == modal) {
+        	closeDefinitionsModal();
+    	}
+	}
+}
+
 
 // update view based on the latest data in localStorage
 function updateView() {
@@ -26,6 +48,7 @@ function updateView() {
 			debugEl.append($("<p>Interval: " + words[i]["interval"] + "</p><br>"));
 		}
 	}
+
 }
 
 chrome.runtime.onMessage.addListener(
@@ -49,7 +72,7 @@ function renderWord(word) {
 	definitionRow = $('#' + definitionRowId);
 
 	definitionRow.append(newEl(el="div", classes="col-md-2 col-md-offset-5", ids="col_define_" + thisWord, content=""));
-	downwardArrowEl = '<span class="glyphicon glyphicon-chevron-down definitionChevron"></span>'
+	downwardArrowEl = '<span class="glyphicon glyphicon-new-window definitionChevron"></span>'
 	$("#col_define_" + thisWord).append(newEl(el="div", classes="btn btn-link define-button col-centered", ids="define_" + thisWord, content="Show definition " + downwardArrowEl));
 
 	// Row of buttons
@@ -100,6 +123,29 @@ function onDeleteButtonClicked (event) {
 // to do: what happens if dictionary loading is very slow
 function onDefineButtonClicked (event) {
 	thisWord = event.data.word;
-	definitions = Dictionary.define(thisWord);
-	alert(definitions);
+	renderDefinitionsModal(thisWord, Dictionary.define(thisWord));
+}
+
+function renderDefinitionsModal(word, definitions) {
+	var modal = document.getElementById('definitionsModal');
+	modal.style.display = "block";
+	var modalContent = $("#modal-content");
+	modalContent.append("<div id='definitionsModal-word'>" + word + "</div>");
+
+	for (var i=0;i<definitions.length;i++) {
+		modalContent.append(generateDefinitionsDiv(definitions[i]));
+	}
+}
+
+// definitions: [partOfSpeech, definition]
+function generateDefinitionsDiv(definition) {
+	var PoS = definition[0];
+	var Def = definition[1];
+	return "<div class='definitionsModal-definition'><i>" + PoS + "</i>  " + Def + "</div>";
+}
+
+function closeDefinitionsModal() {
+	var modal = document.getElementById('definitionsModal');
+	modal.style.display = "none";
+	$("#modal-content").empty();
 }
